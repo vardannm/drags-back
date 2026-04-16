@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "check": "node --check server.js"
+    "check": "node --check server.js",
+    "create:user": "node scripts/createUser.js",
+    "check:login": "node scripts/checkLogin.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

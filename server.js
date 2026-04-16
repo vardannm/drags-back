@@ -1,10 +1,6 @@
 // ====================== TOP OF FILE ======================
 require('dotenv').config();
 
-// DNS fix for MongoDB Atlas (important on Windows)
-const dns = require('node:dns/promises');
-dns.setServers(['1.1.1.1', '8.8.8.8', '8.8.4.4']);
-
 require('express-async-errors');
 
 const express = require('express');

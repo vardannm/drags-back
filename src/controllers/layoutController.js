@@ -1,7 +1,7 @@
 const Layout = require('../models/Layout');
 
 function normalizeLayoutBody(body) {
-  return {
+  const normalized = {
     name: body.name,
     mode: body.mode,
     windows: Array.isArray(body.windows) ? body.windows : [],
@@ -15,6 +15,12 @@ function normalizeLayoutBody(body) {
       taxCalculations: body.dashboardData?.taxCalculations || {},
     },
   };
+
+  if (Object.prototype.hasOwnProperty.call(body, 'isFavorite')) {
+    normalized.isFavorite = Boolean(body.isFavorite);
+  }
+
+  return normalized;
 }
 
 async function saveLayout(req, res) {
@@ -70,10 +76,37 @@ async function deleteLayout(req, res) {
   return res.status(204).send();
 }
 
+async function deleteFavoriteLayout(req, res) {
+  const result = await Layout.findOneAndDelete({
+    _id: req.params.id,
+    user: req.user._id,
+    isFavorite: true,
+  });
+
+  if (!result) {
+    return res.status(404).json({ message: 'Favorite layout not found.' });
+  }
+
+  return res.status(204).send();
+}
+
+async function deleteFavoriteLayouts(req, res) {
+  const result = await Layout.deleteMany({
+    user: req.user._id,
+    isFavorite: true,
+  });
+
+  return res.status(200).json({
+    deletedCount: result.deletedCount || 0,
+  });
+}
+
 module.exports = {
   saveLayout,
   getLayouts,
   getLayoutById,
   updateLayout,
   deleteLayout,
+  deleteFavoriteLayout,
+  deleteFavoriteLayouts,
 };

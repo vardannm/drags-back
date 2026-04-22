@@ -31,6 +31,7 @@ const layoutSchema = new mongoose.Schema(
     windows: { type: [windowStateSchema], default: [] },
     order: { type: [String], default: [] },
     dashboardData: { type: dashboardDataSchema, default: () => ({}) },
+    isFavorite: { type: Boolean, default: false },
     isLastUnsaved: { type: Boolean, default: false },
   },
   { timestamps: true }
